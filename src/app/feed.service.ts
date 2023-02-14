@@ -31,12 +31,28 @@ export class FeedService {
       map((data: FeedrResponse) => {
         let oStories: Story[] = [];
         data.responseData.feed.entries.forEach((story) => {
-          let match = story.content.match(/<img[^>]+src="(([^">]+))"/i);
+          let matches = story.content.match(/<img[^>]+src="(([^">]+))"/gi);
 
-          if (match != null) {
-            story.image = match[1];
-          } else {
-            console.log(this.baseHref);
+          let foundImage = false;
+          if (matches != null) {
+            
+            
+            for (let i = 0; i < matches.length && !foundImage; i++) {
+              let match = matches[i].match(/<img[^>]+src="(([^">]+))"/i);
+              
+              if (match != null) {
+
+                if (match[1].includes("api.follow.it")) {
+                  continue;
+                }
+                story.image = match[1];
+                foundImage = true;
+              }
+            }
+
+          } 
+          
+          if (!foundImage) {
             story.image = this.baseHref + 'assets/article.png';
           }
           
