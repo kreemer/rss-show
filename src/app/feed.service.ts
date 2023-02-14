@@ -1,17 +1,18 @@
-import { Injectable } from '@angular/core';
+import { Inject, Injectable } from '@angular/core';
 import { from, map, Observable, of } from 'rxjs';
 import { Feed } from './feed';
 import { FEEDS } from './feed/mock-feeds';
 import { Story } from './story';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { FeedrResponse } from './feedr-response';
+import { APP_BASE_HREF } from '@angular/common';
 
 @Injectable({
   providedIn: 'root'
 })
 export class FeedService {
 
-  constructor(private http: HttpClient) { }
+  constructor(@Inject(APP_BASE_HREF) public baseHref:string, private http: HttpClient) { }
 
   getFeeds(): Observable<Feed[]> {
     return of(FEEDS);
@@ -35,7 +36,7 @@ export class FeedService {
           if (match != null) {
             story.image = match[1];
           } else {
-            story.image = './assets/article.png';
+            story.image = this.baseHref + '/assets/article.png';
           }
           
           oStories.push(story);
