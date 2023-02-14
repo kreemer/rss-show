@@ -36,7 +36,8 @@ export class FeedService {
           if (match != null) {
             story.image = match[1];
           } else {
-            story.image = this.baseHref + '/assets/article.png';
+            console.log(this.baseHref);
+            story.image = this.baseHref + 'assets/article.png';
           }
           
           oStories.push(story);
