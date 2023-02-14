@@ -32,9 +32,10 @@ export class FeedService {
         data.responseData.feed.entries.forEach((story) => {
           let match = story.content.match(/<img[^>]+src="(([^">]+))"/i);
 
-          console.log(match);
           if (match != null) {
             story.image = match[1];
+          } else {
+            story.image = './assets/article.png';
           }
           
           oStories.push(story);
